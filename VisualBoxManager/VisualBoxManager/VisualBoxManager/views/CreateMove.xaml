@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.CreateMove">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Create Move"  XAlign="Center"/>
+            <Entry Placeholder="Name" Text="{Binding MoveName}" />
+            <Label TextColor="Red" Text="{Binding ErrMoveName}"/>
+
+            <StackLayout Orientation="Horizontal" >
+                <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                <Button Text="Save"  Command="{Binding CreatNewMoveCommand}"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" BackgroundColor="DarkGray"
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" Padding="20">
+                <Label Text="Please Wait..." TextColor="White" HorizontalOptions="Center" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="Accent" >
+                </ActivityIndicator>
+            </StackLayout>
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

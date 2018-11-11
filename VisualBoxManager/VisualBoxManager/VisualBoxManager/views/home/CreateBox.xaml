@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.views.CreateBox">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Placeholder="Box Name" Text="{Binding BoxName}" IsEnabled="{Binding IsNotBusy}"/>
+            <Label TextColor="Red" Text="{Binding ErrBoxName}"/>
+            <Label Text="Priority"/>
+            <Picker SelectedIndex="{Binding Priority}"  Title="Priority" IsEnabled="{Binding IsNotBusy}">
+                <Picker.Items>
+                    <x:String>Low</x:String>
+                    <x:String>Medium</x:String>
+                    <x:String>High</x:String>
+                </Picker.Items>
+            </Picker>
+            <Label Text="Destination room"/>
+            <Picker ItemsSource="{Binding Rooms}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedRoom}"   Title="Select destination room" IsEnabled="{Binding IsNotBusy}"/>
+            <StackLayout Orientation="Horizontal" >
+                <Button Text="Cancel"    Command="{Binding CancelCommand}"/>
+                <Button Text="Save"      Command="{Binding CreateNewBoxCommand}"/>
+                <Button Text="Add Room"  Command="{Binding CreateNewRoomCommand}"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" BackgroundColor="DarkGray"
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" Padding="20">
+                <Label Text="Please Wait..." TextColor="White" HorizontalOptions="Center" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="Accent" >
+                </ActivityIndicator>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

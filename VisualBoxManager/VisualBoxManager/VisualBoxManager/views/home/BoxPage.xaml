@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.BoxPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Your Boxes" XAlign="Center" />
+            <StackLayout >
+                <ListView Margin="20" 
+                          ItemsSource="{Binding Boxes}"  
+                          HasUnevenRows="True" 
+                          SelectedItem="{Binding SelectedBox}"
+                          IsPullToRefreshEnabled="True"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Clicked="Delete_OnClicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    <MenuItem Clicked="Edit_OnClicked" CommandParameter="{Binding .}" Text="Edit" IsDestructive="false" />
+                                </ViewCell.ContextActions>
+                                <ViewCell.View>
+                                    <StackLayout Padding="20,0,0,0" HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                        <Label Text="{Binding name}" VerticalTextAlignment="Center"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <Button Text="Create" Command="{Binding CreatNewBoxCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

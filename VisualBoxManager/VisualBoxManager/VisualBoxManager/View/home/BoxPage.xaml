@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.BoxPage">
+    <ContentPage.Content>
+        <StackLayout x:Name="stackBox">
+            <Label Text="Your Boxes" XAlign="Center" />
+                <ListView x:Name="listView" Margin="20" ItemSelected="ListView_ItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="20,0,0,0" HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                    <Label Text="{Binding BoxName}" VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            <Button Text="Creat" Clicked="OnCreateNew"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

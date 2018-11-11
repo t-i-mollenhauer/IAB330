@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.MovePage">
+    <ContentPage.Content>
+        <StackLayout>
+            
+            <Label Text="Your Moves" XAlign="Center" />
+            <StackLayout >
+                <ListView Margin="20" 
+                          ItemsSource="{Binding Moves}"  
+                          HasUnevenRows="True" 
+                          SelectedItem="{Binding SelectedMove}" 
+                          IsPullToRefreshEnabled="True"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                          >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Clicked="MenuItem_OnClicked" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                </ViewCell.ContextActions>
+                                <ViewCell.View>
+                                    <StackLayout Padding="20,0,0,0" HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                        <Label Text="{Binding name}" VerticalTextAlignment="Center"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <Button Text="Create" Command="{Binding CreatNewMoveCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

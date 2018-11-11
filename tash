@@ -1,0 +1,386 @@
+[1mdiff --git a/VisualBoxManager/VisualBoxManager/VisualBoxManager/App.xaml.cs b/VisualBoxManager/VisualBoxManager/VisualBoxManager/App.xaml.cs[m
+[1mindex 935c815..02c3aba 100644[m
+[1m--- a/VisualBoxManager/VisualBoxManager/VisualBoxManager/App.xaml.cs[m
+[1m+++ b/VisualBoxManager/VisualBoxManager/VisualBoxManager/App.xaml.cs[m
+[36m@@ -9,31 +9,27 @@[m [mnamespace VisualBoxManager[m
+ {[m
+     public partial class App : Application[m
+     {[m
+[31m-        private IConnectionService _connectionService;[m
+         private static NavigationPage _navPage;[m
+[32m+[m[32m        private IConnectionService _connectionService;[m
+         private Auth auth;[m
+[31m-                [m
+[32m+[m
+         public App()[m
+         {[m
+             InitializeComponent();[m
+ [m
+             _connectionService = ConnectionService.Instance();//new MockConnectionService();[m
+[31m-            _navPage = new NavigationPage(new Start(_connectionService));[m
+[32m+[m[32m            var start = new Start(_connectionService);[m
+[32m+[m[32m            var _navPage = new NavigationPage(start);[m
+             MainPage = _navPage;[m
+[32m+[m[32m            _navPage.Popped += start.OnPopped;[m
+             System.Diagnostics.Debug.WriteLine("App initialisation complete");[m
+         }[m
+[32m+[m
+         //Not a good practice?[m
+[31m-        private static NavigationPage getNavigation() {[m
+[32m+[m[32m        private static NavigationPage getNavigation()[m
+[32m+[m[32m        {[m
+             return _navPage;[m
+         }[m
+[31m-        public static async void PopNavAsync()[m
+[31m-        {[m
+[31m-           await _navPage.PopAsync();[m
+[31m-        }[m
+[31m-        public static async void PushNavAsync(Page page)[m
+[31m-        {[m
+[31m-            await _navPage.PushAsync(page);[m
+[31m-        }[m
+ [m
+ [m
+         protected override void OnResume()[m
+[36m@@ -55,5 +51,13 @@[m [mprotected override void OnStart()[m
+         {[m
+             auth = Auth.Instance();[m
+         }[m
+[32m+[m[32m        public static async void PopNavAsync()[m
+[32m+[m[32m        {[m
+[32m+[m[32m            await _navPage.PopAsync();[m
+[32m+[m[32m        }[m
+[32m+[m[32m        public static async void PushNavAsync(Page page)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            await _navPage.PushAsync(page);[m
+[32m+[m[32m        }[m
+     }[m
+ }[m
+[1mdiff --git a/VisualBoxManager/VisualBoxManager/VisualBoxManager/ConnectionServices/ConnectionService.cs b/VisualBoxManager/VisualBoxManager/VisualBoxManager/ConnectionServices/ConnectionService.cs[m
+[1mindex e753320..a5de08f 100644[m
+[1m--- a/VisualBoxManager/VisualBoxManager/VisualBoxManager/ConnectionServices/ConnectionService.cs[m
+[1m+++ b/VisualBoxManager/VisualBoxManager/VisualBoxManager/ConnectionServices/ConnectionService.cs[m
+[36m@@ -1,30 +1,30 @@[m
+ ﻿using System;[m
+[32m+[m[32musing System.Collections;[m
+ using System.Collections.Generic;[m
+[31m-using System.Text;[m
+[32m+[m[32musing System.Collections.ObjectModel;[m
+[32m+[m[32musing System.Linq;[m
+[32m+[m[32musing System.Net;[m
+ using System.Net.Http;[m
+ using System.Net.Http.Headers;[m
+[32m+[m[32musing System.Security.Authentication;[m
+[32m+[m[32musing System.Text;[m
+ using System.Threading.Tasks;[m
+ using Newtonsoft.Json;[m
+[31m-using System.Net;[m
+[31m-using System.Collections;[m
+[31m-using System.Linq;[m
+[31m-using System.Security.Authentication;[m
+ using Newtonsoft.Json.Linq;[m
+ using VisualBoxManager.Objects;[m
+[31m-using System.Collections.ObjectModel;[m
+ [m
+ namespace VisualBoxManager[m
+ {[m
+     class ConnectionService : IConnectionService[m
+     {[m
+[32m+[m
+[32m+[m[32m        //** SINGLETON SETUP **//[m
+[32m+[m[32m        private static ConnectionService _instance = new ConnectionService();[m
+[32m+[m[32m        private static CookieContainer cookieContainer = new CookieContainer();[m
+         private readonly User user;[m
+         private bool authorised;[m
+ [m
+         private HttpClient client;[m
+[31m-        private static CookieContainer cookieContainer = new CookieContainer();[m
+[31m-[m
+[31m-        //** SINGLETON SETUP **//[m
+[31m-        private static ConnectionService _instance = new ConnectionService();[m
+ [m
+         private ConnectionService()[m
+         {[m
+[36m@@ -43,41 +43,6 @@[m [mprivate ConnectionService()[m
+             client.DefaultRequestHeaders.Add("accept", "application/json");[m
+         }[m
+ [m
+[31m-        internal static ConnectionService Instance()[m
+[31m-        {[m
+[31m-            return _instance;[m
+[31m-        }[m
+[31m-[m
+[31m-        //** END SINGLETON SETUP **//[m
+[31m-[m
+[31m-        public HttpClient GetClient()[m
+[31m-        {[m
+[31m-            return this.client;[m
+[31m-        }[m
+[31m-[m
+[31m-        public bool IsAuthorised()[m
+[31m-        {[m
+[31m-            return this.authorised;[m
+[31m-        }[m
+[31m-[m
+[31m-        public async Task<bool> Login(string username, string password)[m
+[31m-        {[m
+[31m-            var authData = string.Format("{0}:{1}", username, password);[m
+[31m-            var request = new HttpRequestMessage()[m
+[31m-            {[m
+[31m-                RequestUri = Config.getLoginUri(),[m
+[31m-                Method = HttpMethod.Post[m
+[31m-            };[m
+[31m-[m
+[31m-            request.Headers.Authorization = new AuthenticationHeaderValue([m
+[31m-                "Basic",[m
+[31m-                Convert.ToBase64String(Encoding.UTF8.GetBytes(authData))[m
+[31m-            );[m
+[31m-[m
+[31m-            authorised =  await ProcessLoginResponse(await client.SendAsync(request));[m
+[31m-            return authorised;[m
+[31m-        }[m
+[31m-[m
+         private async Task<bool> ProcessLoginResponse(HttpResponseMessage response)[m
+         {[m
+             if (response.IsSuccessStatusCode)[m
+[36m@@ -116,7 +81,7 @@[m [mpublic bool IsAuthorised()[m
+                         cookie.Expired = true;[m
+                     }[m
+                 }[m
+[31m-                [m
+[32m+[m
+                 return true;[m
+ [m
+             }[m
+[36m@@ -126,26 +91,14 @@[m [mpublic bool IsAuthorised()[m
+             }[m
+         }[m
+ [m
+[31m-        public async Task<HttpResponseMessage> MakeRequest(HttpRequestMessage message)[m
+[31m-        {[m
+[31m-            if (authorised)[m
+[31m-            {[m
+[31m-                return await client.SendAsync(message);[m
+[31m-            }[m
+[31m-            else[m
+[31m-            {[m
+[31m-                throw new AuthenticationException("User is not authenticated");[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+ [m
+         //**OLD FUNCTIONS TO BE MOVED**\\[m
+ [m
+         public async Task<bool> AddUser(string firstName, string lastName, string email, string password)[m
+         {[m
+[31m-            user.email     = email.Trim();[m
+[32m+[m[32m            user.email = email.Trim();[m
+             user.firstName = firstName.Trim();[m
+[31m-            user.lastName  = lastName.Trim();[m
+[32m+[m[32m            user.lastName = lastName.Trim();[m
+ [m
+             //Build Json content for post[m
+ [m
+[36m@@ -192,13 +145,50 @@[m [mpublic bool IsAuthorised()[m
+                     return false;[m
+                 }[m
+ [m
+[31m-            }catch (Exception e){[m
+[32m+[m[32m            }[m
+[32m+[m[32m            catch (Exception e)[m
+[32m+[m[32m            {[m
+                 System.Diagnostics.Debug.WriteLine("8================D  Exception when sending request: " + e.GetType().ToString() + " --> MESSAGE: " + e.Message);[m
+             }[m
+             return false;[m
+             //add id to user object[m
+ [m
+[31m-            [m
+[32m+[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        // must assign an ID do box.id[m
+[32m+[m[32m        public async Task<string> CreateBox(string moveId, Box box)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return await Task.FromResult("Create Box");[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        public async Task<List<Box>> GetBoxes(string moveId)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return await Task.FromResult(new List<Box>());[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        //** END SINGLETON SETUP **//[m
+[32m+[m
+[32m+[m[32m        public HttpClient GetClient()[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return this.client;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        public async Task<List<Item>> GetItems(string moveId)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return await Task.FromResult(new List<Item>());[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        public async Task<List<Item>> GetItems(string moveId, string boxId)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return await Task.FromResult(new List<Item>());[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        public Task<List<Room>> GetRooms(string moveId)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            throw new NotImplementedException();[m
+         }[m
+ [m
+         /*public async Task<ObservableCollection<Move>> GetMoves()[m
+[36m@@ -245,32 +235,49 @@[m [mpublic string GetUsername()[m
+             throw new NotImplementedException();[m
+         }[m
+ [m
+[31m-[m
+[31m-[m
+[31m-        public async Task<List<Box>> GetBoxes(string moveId)[m
+[32m+[m[32m        internal static ConnectionService Instance()[m
+         {[m
+[31m-            return await Task.FromResult(new List<Box>());[m
+[32m+[m[32m            return _instance;[m
+         }[m
+ [m
+[31m-        public async Task<List<Item>> GetItems(string moveId)[m
+[32m+[m[32m        public bool IsAuthorised()[m
+         {[m
+[31m-            return await Task.FromResult(new List<Item>());[m
+[32m+[m[32m            return this.authorised;[m
+         }[m
+ [m
+[31m-        public async Task<List<Item>> GetItems(string moveId, string boxId)[m
+[32m+[m[32m        public async Task<bool> Login(string username, string password)[m
+         {[m
+[31m-            return await Task.FromResult(new List<Item>());[m
+[32m+[m[32m            var authData = string.Format("{0}:{1}", username, password);[m
+[32m+[m[32m            var request = new HttpRequestMessage()[m
+[32m+[m[32m            {[m
+[32m+[m[32m                RequestUri = Config.getLoginUri(),[m
+[32m+[m[32m                Method = HttpMethod.Post[m
+[32m+[m[32m            };[m
+[32m+[m
+[32m+[m[32m            request.Headers.Authorization = new AuthenticationHeaderValue([m
+[32m+[m[32m                "Basic",[m
+[32m+[m[32m                Convert.ToBase64String(Encoding.UTF8.GetBytes(authData))[m
+[32m+[m[32m            );[m
+[32m+[m
+[32m+[m[32m            authorised = await ProcessLoginResponse(await client.SendAsync(request));[m
+[32m+[m[32m            return authorised;[m
+         }[m
+ [m
+[31m-        // must assign an ID do box.id[m
+[31m-        public async Task<string> CreateBox(string moveId, Box box)[m
+[31m-        {[m
+[31m-            return await Task.FromResult("Create Box");[m
+[31m-        }[m
+[31m-[m
+[31m-        public Task<List<Room>> GetRooms(string moveId)[m
+[32m+[m[32m        public Task LogOut()[m
+         {[m
+             throw new NotImplementedException();[m
+         }[m
+[32m+[m
+[32m+[m[32m        public async Task<HttpResponseMessage> MakeRequest(HttpRequestMessage message)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (authorised)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                return await client.SendAsync(message);[m
+[32m+[m[32m            }[m
+[32m+[m[32m            else[m
+[32m+[m[32m            {[m
+[32m+[m[32m                throw new AuthenticationException("User is not authenticated");[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+     }[m
+ }[m
+[1mdiff --git a/VisualBoxManager/VisualBoxManager/VisualBoxManager/Interfaces/IConnectionService.cs b/VisualBoxManager/VisualBoxManager/VisualBoxManager/Interfaces/IConnectionService.cs[m
+[1mindex b54394e..0e19285 100644[m
+[1m--- a/VisualBoxManager/VisualBoxManager/VisualBoxManager/Interfaces/IConnectionService.cs[m
+[1m+++ b/VisualBoxManager/VisualBoxManager/VisualBoxManager/Interfaces/IConnectionService.cs[m
+[36m@@ -11,15 +11,16 @@[m [mnamespace VisualBoxManager[m
+     public interface IConnectionService[m
+     {[m
+         Task<bool> AddUser(string firstName, string lastName, string email, string password);[m
+[32m+[m[32m        // Task<ObservableCollection<Move>> GetMoves();[m
+[32m+[m[32m        // Task<String> CreateMove(Move move);[m
+[32m+[m[32m        Task<String> CreateBox(string moveId, Box box);[m
+         //bool CheckUsername(string username);[m
+         Task<List<Box>> GetBoxes(string moveId);[m
+         Task<List<Item>> GetItems(string moveId);[m
+         Task<List<Item>> GetItems(string moveId, string boxId);[m
+[31m-       // Task<ObservableCollection<Move>> GetMoves();[m
+[31m-       // Task<String> CreateMove(Move move);[m
+[31m-        Task<String> CreateBox(string moveId, Box box);[m
+[32m+[m[32m        Task<List<Room>> GetRooms(string moveId);[m
+         string GetUsername();[m
+         Task<bool> Login(string username, string password);[m
+[31m-        Task<List<Room>> GetRooms(string moveId);[m
+[32m+[m[32m        Task LogOut();[m
+     }[m
+ }[m
+[1mdiff --git a/VisualBoxManager/VisualBoxManager/VisualBoxManager/MockingObjects/MockConnectionService.cs b/VisualBoxManager/VisualBoxManager/VisualBoxManager/MockingObjects/MockConnectionService.cs[m
+[1mindex 7b7d423..8214539 100644[m
+[1m--- a/VisualBoxManager/VisualBoxManager/VisualBoxManager/MockingObjects/MockConnectionService.cs[m
+[1m+++ b/VisualBoxManager/VisualBoxManager/VisualBoxManager/MockingObjects/MockConnectionService.cs[m
+[36m@@ -11,9 +11,10 @@[m [mnamespace VisualBoxManager[m
+     class MockConnectionService : IConnectionService[m
+     {[m
+         private string _uname;[m
+[31m-        private User user;[m
+         private int idCounter;[m
+[31m-        public MockConnectionService() {[m
+[32m+[m[32m        private User user;[m
+[32m+[m[32m        public MockConnectionService()[m
+[32m+[m[32m        {[m
+             user = User.Instance();[m
+ [m
+             List<Move> list = new List<Move>[m
+[36m@@ -24,11 +25,11 @@[m [mclass MockConnectionService : IConnectionService[m
+              };[m
+             idCounter = 4;[m
+             user.SyncMoves(list);[m
+[31m-            user.addOrUpdateMove( new Move("Helping friends2", "3"));[m
+[32m+[m[32m            user.addOrUpdateMove(new Move("Helping friends2", "3"));[m
+         }[m
+         public Task<bool> AddUser(string firstName, string lastName, string email, string password)[m
+         {[m
+[31m-          [m
+[32m+[m
+             return Task.FromResult<bool>(true);[m
+         }[m
+ [m
+[36m@@ -39,9 +40,22 @@[m [mpublic bool CheckUsername(string username)[m
+             return true;[m
+         }[m
+ [m
+[32m+[m[32m        public Task<string> CreateBox(string moveId, Box box)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            box.id = "id32";[m
+[32m+[m[32m            return Task.FromResult(box.id);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        public async Task<String> CreateMove(Move move)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            idCounter += 1;[m
+[32m+[m
+[32m+[m[32m            return await Task.FromResult(idCounter.ToString());[m
+[32m+[m[32m        }[m
+[32m+[m
+         public async Task<List<Box>> GetBoxes(string moveId)[m
+         {[m
+[31m-                List<Box> list = new List<Box>[m
+[32m+[m[32m            List<Box> list = new List<Box>[m
+             {[m
+                 new Box("Kitchen 1", BoxPriority.Medium, null),[m
+                 new Box("Kitchen 2", BoxPriority.Medium, null),[m
+[36m@@ -72,12 +86,32 @@[m [mpublic bool CheckUsername(string username)[m
+             return list;[m
+         }[m
+ [m
+[32m+[m[32m        public async Task<List<Item>> GetI

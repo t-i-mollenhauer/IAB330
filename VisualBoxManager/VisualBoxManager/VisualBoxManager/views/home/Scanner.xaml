@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.views.Home.Scanner">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Items"/>
+                <Button Text="Boxes"/>
+                <!-- Can insert Rooms, but dont think it is a good thing to add-->
+                <Button Text="Scanner" IsEnabled="False"/>
+            </StackLayout>
+            <!-- Insert scanner. -->
+            
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

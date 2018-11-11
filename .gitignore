@@ -1,0 +1,42 @@
+VisualBoxManager/packages/
+
+VisualBoxManager/VisualBoxManager/VisualBoxManager.Android/obj/
+VisualBoxManager/VisualBoxManager/VisualBoxManager.Android/bin/
+VisualBoxManager/VisualBoxManager/VisualBoxManager.iOS/obj/
+VisualBoxManager/VisualBoxManager/VisualBoxManager.iOS/bin/
+
+#Autosave files
+*~
+
+# Build/test output
+obj
+bin
+test-results
+#Autosave files
+*~
+
+#build
+[Oo]bj/
+[Bb]in/
+packages/
+TestResults/
+Components/
+# VS sometimes writes these for no apparent reason
+_UpgradeReport_Files
+UpgradeLog.*
+
+# Per-user data
+*.DS_Store
+*.sln.cache
+*.suo
+*.userprefs
+*.usertasks
+*.user
+
+# ReSharper
+*_Resharper.*
+*.Resharper
+
+# dotCover
+*.dotcover
+*.ide

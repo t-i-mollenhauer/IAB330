@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>893b601c-33dc-4917-bf47-c1f4c1e84514</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>VisualBoxManager</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)AssembleyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\BoxDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\ItemDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\MoveDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\RoomDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\UserDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IConnectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MockingObjects\MockConnectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Auth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Box.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\Config.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConnectionServices\ConnectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\HttpClientFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Move.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\MoveController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Priority.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Room.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Validations\ValidationResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Validations\Validator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateRoomViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Home\BoxPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Home\CreateBoxViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateMoveViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateUserViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Home\ItemPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MoveViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RootViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\StartViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\CreateBox.xaml.cs">
+      <DependentUpon>CreateBox.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\CreateItem.xaml.cs">
+      <DependentUpon>CreateItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\CreateMove.xaml.cs">
+      <DependentUpon>CreateMove.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\CreateUser.xaml.cs">
+      <DependentUpon>CreateUser.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\BoxPage.xaml.cs">
+      <DependentUpon>BoxPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\CreateRoom.xaml.cs">
+      <DependentUpon>CreateRoom.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\ItemPage.xaml.cs">
+      <DependentUpon>ItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\home\Scanner.xaml.cs">
+      <DependentUpon>Scanner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\MovePage.xaml.cs">
+      <DependentUpon>MovePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)views\Start.xaml.cs">
+      <DependentUpon>Start.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\Start.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\CreateUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\CreateMove.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\MovePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\Scanner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\BoxPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\ItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\CreateItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\CreateBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Home\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)views\home\CreateRoom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

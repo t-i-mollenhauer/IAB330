@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.Start" x:Name="LoginPage">
+    <Grid>
+        
+        <StackLayout >
+            <Label Text="Box Manger" XAlign="Center"/>
+            <Entry x:Name="labelUname" Placeholder="Email Address"/>
+            <Entry x:Name="labelPass" Placeholder="Password" IsPassword="True"/>
+            <Label x:Name="labelErr" TextColor="Red" />
+            <Button x:Name="loginBtn" Text="Log in" Clicked="OnLogin"/>
+            <Button Text="New User" Clicked="OnCreateNewUser"/>
+
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding Source={x:Reference LoginPage}, Path=IsBusy}" BackgroundColor="DarkGray"
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" Padding="20">
+            <Label Text="Please Wait..." TextColor="White" HorizontalOptions="Center" />
+            <ActivityIndicator IsRunning="{Binding Source={x:Reference LoginPage}, Path=IsBusy}" Color="Accent" >
+            </ActivityIndicator>
+        </StackLayout>
+        
+    </Grid>
+</ContentPage>

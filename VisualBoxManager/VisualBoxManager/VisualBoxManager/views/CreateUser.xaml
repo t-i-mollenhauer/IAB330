@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisualBoxManager.CreateUser" >
+    <Grid>
+        <StackLayout>
+            <Label Text="Create User" XAlign="Center"/>
+            <Entry Placeholder="First Name" Text="{Binding FName}" />
+            <Label TextColor="Red" Text="{Binding ErrorFirst}" />
+            
+            <Entry Placeholder="Last Name" Text="{Binding LName}" />
+            <Label TextColor="Red" Text="{Binding ErrorLast}" />
+            
+            <Entry Placeholder="email" Text="{Binding Email}" />
+            <Label TextColor="Red" Text="{Binding ErrorEmail}" />
+            
+            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+             <Entry Placeholder="Confirm Password" IsPassword="True" Text="{Binding Repassword}" />
+            <Label TextColor="Red" Text="{Binding ErrorPass}" />
+            
+            <Button Text="Create User" Command="{Binding CreatNewUserCommand}" />
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding IsBusy}" BackgroundColor="DarkGray"
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" Padding="20">
+            <Label Text="Please Wait..." TextColor="White" HorizontalOptions="Center" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color="Accent" >
+            </ActivityIndicator>
+        </StackLayout>
+    </Grid>
+</ContentPage>
